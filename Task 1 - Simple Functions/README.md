@@ -91,3 +91,10 @@ def square_digits(list) do
   Enum.map(list, fn x -> x * x end)
 end
 ```
+
+List comprehension in Elixir:
+```elixir
+[x, y, z] = [1, 2, 3] # => [1, 2, 3]
+[head | tail] = [1, 2, 3] #=> [1, [2, 3]]
+[_, {x, y} | _] = [{:a, 1}, {:b, 2}, {:c, 3}, {:d, 4}] # => {:b, 2}
+```
