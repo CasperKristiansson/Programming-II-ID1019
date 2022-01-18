@@ -20,11 +20,9 @@ foo.(2)
 ## Using Elixir in Programs
 ```elixir
 defmodule Test do
-
   def to_celsius(fahren) do
     (fahren - 32) / 1.8
   end
-
 end
 ```
 
@@ -73,4 +71,23 @@ iex -S mix
 Recompile the project inside session:
 ```elixir
 recompile()
+```
+
+
+## Example functions
+Calculating the product of two numbers using recursion:
+```elixir
+def product_case(m, n) do
+    case m do
+      0 -> 0
+      _ -> n + product_case(m - 1, n)
+    end
+  end
+```
+
+Mapping a list and applying a function to each element:
+```elixir
+def square_digits(list) do
+  Enum.map(list, fn x -> x * x end)
+end
 ```
