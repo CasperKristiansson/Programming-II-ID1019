@@ -69,10 +69,9 @@ iex -S mix
 ```
 
 Recompile the project inside session:
-```elixir
-recompile()
+```bash
+iex(1)> recompile()
 ```
-
 
 ## Example functions
 Calculating the product of two numbers using recursion:
