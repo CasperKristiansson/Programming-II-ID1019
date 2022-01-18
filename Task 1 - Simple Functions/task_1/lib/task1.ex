@@ -23,6 +23,9 @@ defmodule Task1 do
     Enum.map(list, fn x -> x * x end)
   end
 
+  @doc """
+   55 -> 2525
+  """
   def square_digit(n) do
     n
     |> Integer.digits()
