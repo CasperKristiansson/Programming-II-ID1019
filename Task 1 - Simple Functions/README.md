@@ -1,6 +1,5 @@
-# Task 1 - Simple Functions
+# Report: Task 1 - Simple Functions
 
-<font size="6">**Report**</font>
 ## Introduction
 The first exercise of the course Programming II consisted of creating basic
 elixir functions, compiling, and testing them. The author will be discussing
@@ -80,10 +79,7 @@ the method divides the list by the head and tail, then using recursion the
 head value is added with a function call. This means that the function will
 continue until the recursion list is empty.
 
-<font size="6">**Notes**</font>
-
-<font size="6">Introduction - functional Programming</font>
-
+# Notes: Introduction - functional Programming
 ## Using Elixir directly in shell
 Enter Elixir's interactive shell (start a new session with `elixir`):
 ```bash
