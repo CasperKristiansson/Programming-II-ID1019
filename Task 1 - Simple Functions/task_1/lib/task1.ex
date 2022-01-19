@@ -39,6 +39,10 @@ defmodule Task1 do
     end
   end
 
+  def add(x, l) do
+    if Enum.member?(l, x), do: l, else: [x | l]
+  end
+
   def remove(x, l) do
     Enum.filter(l, fn y -> y != x end)
   end
