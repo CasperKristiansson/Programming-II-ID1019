@@ -77,11 +77,11 @@ iex(1)> recompile()
 Calculating the product of two numbers using recursion:
 ```elixir
 def product_case(m, n) do
-    case m do
-      0 -> 0
-      _ -> n + product_case(m - 1, n)
-    end
+  case m do
+    0 -> 0
+    _ -> n + product_case(m - 1, n)
   end
+end
 ```
 
 Mapping a list and applying a function to each element:
