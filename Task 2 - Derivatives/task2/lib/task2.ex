@@ -64,6 +64,36 @@ defmodule Derivative do
     IO.write("Calculated: #{pprint(simplify(c))}\n")
   end
 
+  def testSin() do
+    e = {:sin, {
+          :mul,
+          {:var, :x},
+          {:num, 3}
+          }
+        }
+    d = deriv(e, :x)
+    c = calc(d, :x, 5)
+    IO.write("Expression: #{pprint(e)}\n")
+    IO.write("Derivative: #{pprint(d)}\n")
+    IO.write("Simplified: #{pprint(simplify(d))}\n")
+    IO.write("Calculated: #{pprint(simplify(c))}\n")
+  end
+
+  def testCos() do
+    e = {:cos, {
+          :mul,
+          {:var, :x},
+          {:num, 3}
+          }
+        }
+    d = deriv(e, :x)
+    c = calc(d, :x, 5)
+    IO.write("Expression: #{pprint(e)}\n")
+    IO.write("Derivative: #{pprint(d)}\n")
+    IO.write("Simplified: #{pprint(simplify(d))}\n")
+    IO.write("Calculated: #{pprint(simplify(c))}\n")
+  end
+
   def deriv({:num, _}, _) do {:num, 0} end
   def deriv({:var, v}, v) do {:num, 1} end
   def deriv({:var, _}, _) do {:num, 0} end
@@ -106,7 +136,21 @@ defmodule Derivative do
       {:sqrt, e}
     }
   end
-
+  def deriv({:sin, e}, v) do
+    {:mul,
+      deriv(e, v),
+      {:cos, e}
+    }
+  end
+  def deriv({:cos, e}, v) do
+    {:mul,
+      {:num, -1},
+      {:mul,
+        deriv(e, v),
+        {:sin, e}
+      }
+    }
+  end
 
   def calc({:num, n}, _, _) do {:num, n} end
   def calc({:var, v}, v, n) do {:num, n} end
@@ -129,6 +173,12 @@ defmodule Derivative do
   def calc({:sqrt, e}, v, n) do
     {:sqrt, calc(e, v, n)}
   end
+  def calc({:sin, e}, v, n) do
+    {:sin, calc(e, v, n)}
+  end
+  def calc({:cos, e}, v, n) do
+    {:cos, calc(e, v, n)}
+  end
 
 
   def simplify({:add, e1, e2}) do
@@ -148,6 +198,12 @@ defmodule Derivative do
   end
   def simplify({:sqrt, e}) do
     simplify_sqrt(simplify(e))
+  end
+  def simplify({:sin, e}) do
+    simplify_sin(simplify(e))
+  end
+  def simplify({:cos, e}) do
+    simplify_cos(simplify(e))
   end
   def simplify(e) do e end
 
@@ -180,6 +236,9 @@ defmodule Derivative do
   def simplify_sqrt({:num, n}) do {:num, n ** 0.5} end
   def simplify_sqrt(e) do {:sqrt, e} end
 
+  def simplify_sin(e) do {:sin, e} end
+  def simplify_cos(e) do {:cos, e} end
+
 
   def pprint({:num, n}) do "#{n}" end
   def pprint({:var, v}) do "#{v}" end
@@ -189,4 +248,6 @@ defmodule Derivative do
   def pprint({:ln, e}) do "ln(#{pprint(e)})" end
   def pprint({:div, e1, e2}) do "(#{pprint(e1)} / #{pprint(e2)})" end
   def pprint({:sqrt, e}) do "sqrt(#{pprint(e)})" end
+  def pprint({:sin, e}) do "sin(#{pprint(e)})" end
+  def pprint({:cos, e}) do "cos(#{pprint(e)})" end
 end
