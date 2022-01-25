@@ -1,4 +1,4 @@
-# Derivatives
+# Recursion and Tree structure - Derivatives
 
 ## Report
 
@@ -146,3 +146,36 @@ t = {:node, 38, {:leaf, 42}, {:leaf, 34}}
 - `Tuples`: constant time random access, expensive to change when large
 - `Queues`: implemented using lists, amortized time complexity O(1)
 - `Trees`: O(lg(n)) operations
+
+## Notes: Derivatives
+To represent derivatives it might be useful to convert it to a string.
+Example
+```text
+3x^2 + 2x + π
+"3x^2 + 2x + pi"
+```
+A **better** solution would be to use `Abstract Syntax Trees` (AST).
+
+- Numbers: {:num, 124}, {:num, 12.4}...
+- Variables: {:var, :x}, {:var, :y}...
+- Constants: {:var, :pi}...
+
+```elixir
+@type literal() :: {:num, number()} | {:var, atom()}
+```
+
+- Operations: {:add, {:num, 1}, {:num, 2}}, {:sub, {:num, 1}, {:num, 2}}...
+```elixir
+@type expr() :: {:add, expr(), expr()} | {:mul, expr(), expr()} | literal()
+```
+
+For example:
+```elixir
+"2 * x + 3" -> {:add, {:mul, {:num, 2}, {:var, :x}}, {:num, 3}}
+```
+
+The derivative rules are:
+- $ \frac{d}{dx}(x)≡1 $
+- $ \frac{d}{dx}(c)≡0 $ *for any literal different from x*
+- $ \frac{d}{dx}(f) + g≡ \frac{d}{dx}(f) + \frac{d}{dx}(g) $
+- $ \frac{d}{dx}(f) * g≡ \frac{d}{dx}(f) * g + f*\frac{d}{dx}(g) $
