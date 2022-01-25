@@ -1,13 +1,18 @@
-# Report: Task 1 - Simple Functions
+# Introduction
+* [Report: Task 1 - Simple Functions](#Report)
+* [Notes: Introduction - functional Programming](#Notes)
 
-## Introduction
+<div id="Report"></div>
+
+## Report: Task 1 - Simple Functions
+### Introduction
 The first exercise of the course Programming II consisted of creating basic
 elixir functions, compiling, and testing them. The author will be discussing
 the basic layout of initiating a new elixir project and how to compile and
 test that project. There will also be examples of a couple of basic functions
 which the author will be discussing and explaining.
 
-## Getting Started
+### Getting Started
 The author firstly started by installing Elixir directly from their website.
 After installing the programming language, it is possible to start and run
 commands directly to Elixirs interactive shell.
@@ -32,7 +37,7 @@ comes with an executable Elixir script called “mix.”
 ```
 *Figure 2: Creating a Elixir Project*
 
-## Creating Basic Functions
+### Creating Basic Functions
 The author started off by watching the lectures on “introduction” and by
 reading the introduction document. The functions that the author built is
 solutions for the exercises in the document and a couple of exercises that was
@@ -79,8 +84,16 @@ the method divides the list by the head and tail, then using recursion the
 head value is added with a function call. This means that the function will
 continue until the recursion list is empty.
 
-# Notes: Introduction - functional Programming
-## Using Elixir directly in shell
+<br>
+<br>
+<br>
+<br>
+
+
+<div id="Notes"></div>
+
+## Notes: Introduction - functional Programming
+### Using Elixir directly in shell
 Enter Elixir's interactive shell (start a new session with `elixir`):
 ```bash
 iex
@@ -97,7 +110,7 @@ foo.(2)
 # => 3
 ```
 
-## Using Elixir in Programs
+### Using Elixir in Programs
 Creating a new Elixir project:
 ```bash
 mix new my_app
@@ -145,7 +158,7 @@ Recompile the project inside session:
 iex(1)> recompile()
 ```
 
-## Example functions
+### Example functions
 Calculating the product of two numbers using recursion:
 ```elixir
 def product_case(m, n) do
