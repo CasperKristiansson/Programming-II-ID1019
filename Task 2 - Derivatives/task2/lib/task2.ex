@@ -155,30 +155,14 @@ defmodule Derivative do
   def calc({:num, n}, _, _) do {:num, n} end
   def calc({:var, v}, v, n) do {:num, n} end
   def calc({:var, v}, _, _) do {:num, v} end
-  def calc({:add, e1, e2}, v, n) do
-    {:add, calc(e1, v, n), calc(e2, v, n)}
-  end
-  def calc({:mul, e1, e2}, v, n) do
-    {:mul, calc(e1, v, n), calc(e2, v, n)}
-  end
-  def calc({:exp, e1, e2}, v, n) do
-    {:exp, calc(e1, v, n), calc(e2, v, n)}
-  end
-  def calc({:ln, e}, v, n) do
-    {:ln, calc(e, v, n)}
-  end
-  def calc({:div, e1, e2}, v, n) do
-    {:div, calc(e1, v, n), calc(e2, v, n)}
-  end
-  def calc({:sqrt, e}, v, n) do
-    {:sqrt, calc(e, v, n)}
-  end
-  def calc({:sin, e}, v, n) do
-    {:sin, calc(e, v, n)}
-  end
-  def calc({:cos, e}, v, n) do
-    {:cos, calc(e, v, n)}
-  end
+  def calc({:add, e1, e2}, v, n) do {:add, calc(e1, v, n), calc(e2, v, n)} end
+  def calc({:mul, e1, e2}, v, n) do {:mul, calc(e1, v, n), calc(e2, v, n)} end
+  def calc({:exp, e1, e2}, v, n) do {:exp, calc(e1, v, n), calc(e2, v, n)} end
+  def calc({:ln, e}, v, n) do {:ln, calc(e, v, n)} end
+  def calc({:div, e1, e2}, v, n) do {:div, calc(e1, v, n), calc(e2, v, n)} end
+  def calc({:sqrt, e}, v, n) do {:sqrt, calc(e, v, n)} end
+  def calc({:sin, e}, v, n) do {:sin, calc(e, v, n)} end
+  def calc({:cos, e}, v, n) do {:cos, calc(e, v, n)} end
 
 
   def simplify({:add, e1, e2}) do
