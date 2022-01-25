@@ -115,7 +115,7 @@ defmodule Derivative do
   def deriv({:div, {:num, n}, e}, v) do
     {:div,
       {:mul,
-        {:num, n},
+        {:num, -n},
         deriv(e, v)
       },
       {:exp, e, {:num, 2}}
