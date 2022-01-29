@@ -57,8 +57,7 @@ defmodule Bench do
     end
   end
 
-  def tree_new() do {:node, :nil} end
-
+  def tree_new() do :nil end
   def tree_insert(e, :nil) do {:leaf, e} end
 
   def tree_insert(e, {:node, value, left, right}) do
@@ -76,6 +75,4 @@ defmodule Bench do
       {:node, value, :nil, {:leaf, e}}
     end
   end
-
-  def tree_insert(e, {:node, :nil}) do {:node, e, :nil, :nil} end
 end
