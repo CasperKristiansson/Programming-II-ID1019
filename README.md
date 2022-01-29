@@ -16,3 +16,14 @@ For higher grades, the student should also be able to:
 - explain the basics of functional programming, its structure and operational semantics
 - evaluate functions with regard to time complexity
 - use message based multi-threaded programming.
+
+## Course Navigation
+### Introduction - functional Programming
+- [Lesson Notes: Introduction](Lesson%20Notes\Introduction.md)
+- [Simple Functions Report](Task%201%20-%20Simple%20Functions\README.md)
+- [Simple Functions Project](Task%201%20-%20Simple%20Functions\task_1)
+
+### Recursion and Tree structure - Derivatives
+- [Lesson Notes: Recursion, Trees, Derivatives](Lesson%20Notes\Recursion%20and%20Treestructure.md)
+- [Derivatives Report](Task%202%20-%20Derivatives\README.md)
+- [Derivatives Project](Task%202%20-%20Derivatives\task2)
