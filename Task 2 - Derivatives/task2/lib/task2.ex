@@ -45,7 +45,7 @@ defmodule Derivative do
   def testln() do
     e = {:ln,
           {:mul,
-            {:num, 2},
+            {:var, :x},
             {:var, :x}
           }
         }
