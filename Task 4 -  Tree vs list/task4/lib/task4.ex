@@ -1,5 +1,4 @@
 defmodule Bench do
-
   def bench() do
 
     ls = [16,32,64,128,256,512,1024,2*1024,4*1024,8*1024]
@@ -31,6 +30,21 @@ defmodule Bench do
     :ok
   end
 
+  def test() do
+    lst = tree_new()
+    lst = tree_insert(5, lst)
+    lst = tree_insert(2, lst)
+    lst = tree_insert(3, lst)
+    lst = tree_insert(4, lst)
+    lst = tree_insert(5, lst)
+    lst = tree_insert(6, lst)
+    lst = tree_insert(7, lst)
+    lst = tree_insert(3, lst)
+    lst = tree_insert(6, lst)
+    lst = tree_insert(2, lst)
+    lst
+  end
+
   def list_new() do [] end
 
   def list_insert(e, []) do [e] end
@@ -57,9 +71,9 @@ defmodule Bench do
 
   def tree_insert(e, {:leaf, value}) do
     if e < value do
-      {:node, value, :nil, {:leaf, e}}
-    else
       {:node, value, {:leaf, e}, :nil}
+    else
+      {:node, value, :nil, {:leaf, e}}
     end
   end
 
