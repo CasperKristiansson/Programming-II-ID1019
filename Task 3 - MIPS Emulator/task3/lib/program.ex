@@ -6,13 +6,24 @@ defmodule Program do
     segment.
   """
   def load({:prgm, code, data}) do
-    {
-      {:code, code},
-      {:data, data}
-    }
+    { code, data }
   end
 
+  # In read instruction the program recives this typle:
+  # {:addi, 1, 1, 5},     # $1 <- 1 + 5 = 6
+  # {:add, 4, 2, 1},      # $4 <- $2 + $1
+  # {:addi, 5, 0, 1},     # $5 <- 0 + 1 = 1
+  # :halt
+  # The pc starts at 0 and jumps 4 for every instruction. Return the correct code segment with that index
   def read_instruction(code, pc) do
+    Enum.at(code, div(pc, 4))
+  end
+
+  def load_word(data, index) do
+    elem(data, index)
+  end
+
+  def store_word(data, index, value) do
 
   end
 end

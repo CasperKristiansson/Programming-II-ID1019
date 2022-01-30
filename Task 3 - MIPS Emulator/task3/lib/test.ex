@@ -1,8 +1,9 @@
 defmodule Test do
   def test() do
-    # Emulator.run(simple_test())
-    {code, data} = Emulator.load(simple_test())
-    {code, data}
+    Emulator.run(simple_test())
+    # {code, data} = Program.load(simple_test())
+    # out = Out.new()
+    # reg = Register.new()
   end
 
   def simple_test() do
