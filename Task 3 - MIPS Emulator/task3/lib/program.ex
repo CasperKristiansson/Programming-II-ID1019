@@ -9,21 +9,29 @@ defmodule Program do
     { code, data }
   end
 
-  # In read instruction the program recives this typle:
-  # {:addi, 1, 1, 5},     # $1 <- 1 + 5 = 6
-  # {:add, 4, 2, 1},      # $4 <- $2 + $1
-  # {:addi, 5, 0, 1},     # $5 <- 0 + 1 = 1
-  # :halt
-  # The pc starts at 0 and jumps 4 for every instruction. Return the correct code segment with that index
   def read_instruction(code, pc) do
     Enum.at(code, div(pc, 4))
   end
 
-  def load_word(data, index) do
-    elem(data, index)
+  def load_address([[]], _) do 0 end
+  def load_address([[{:label, value}, {:word, address}] | tail], data) do
+    if data == value do
+      address
+    else
+      load_address(tail, data)
+    end
   end
 
-  def store_word(data, index, value) do
+  def load_value([], _) do raise "Register Empty" end
+  def load_value([[{:label, value}, {:word, address}] | tail], data) do
+    if data == address do
+      value
+    else
+      load_value(tail, data)
+    end
+  end
 
+  def write(memory, address, value) do
+    memory ++ [{:label, value}, {:word, address}]
   end
 end
