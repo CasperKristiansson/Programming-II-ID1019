@@ -22,7 +22,7 @@ defmodule Program do
     end
   end
 
-  def load_value([], _) do raise "Register Empty" end
+  def load_value([[]], _) do raise "Register Empty" end
   def load_value([[{:label, value}, {:word, address}] | tail], data) do
     if data == address do
       value
@@ -32,6 +32,7 @@ defmodule Program do
   end
 
   def write(memory, address, value) do
-    memory ++ [{:label, value}, {:word, address}]
+    0 = rem(address, 4)
+    memory ++ [[{:label, value}, {:word, address}]]
   end
 end

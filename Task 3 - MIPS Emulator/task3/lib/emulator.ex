@@ -15,6 +15,7 @@ defmodule Emulator do
     next = Program.read_instruction(code, pc)
     case next do
       :halt ->
+        out = Out.close(out)
         { reg, mem, out}
 
       {:out, rs} ->
@@ -25,7 +26,6 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:add, rd, rs, rt} ->
-        IO.write('Add')
         s = Register.read(reg, rs)
         t = Register.read(reg, rt)
         reg = Register.write(reg, rd, s + t)
@@ -34,7 +34,6 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:sub, rd, rs, rt} ->
-        IO.write('sub')
         s = Register.read(reg, rs)
         t = Register.read(reg, rt)
         reg = Register.write(reg, rd, s - t)
@@ -43,7 +42,6 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:addi, rt, rs, imm} ->
-        IO.write('Addi')
         s = Register.read(reg, rs)
         reg = Register.write(reg, rt, s + imm)
 
@@ -58,7 +56,6 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:sw, rt, rs, imm} ->
-        IO.write('Sw')
         s = Register.read(reg, rt)
         address = Program.load_address(mem, imm) + rs
         mem = Program.write(mem, address, s)
@@ -67,19 +64,22 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:beq, rs, rt, imm} ->
-        IO.write('Beq')
         s = Register.read(reg, rs)
         t = Register.read(reg, rt)
 
         if s == t do
-          pc = imm + 4
+          address = Program.load_address(mem, imm)
+          pc = address + 4
+          run(pc, code, reg, mem, out)
         else
           pc = pc + 4
+          run(pc, code, reg, mem, out)
         end
-        run(pc, code, reg, mem, out)
 
       {:label, label} ->
-
+        mem = Program.write(mem, pc, label)
+        pc = pc + 4
+        run(pc, code, reg, mem, out)
     end
   end
 end
