@@ -31,6 +31,6 @@ For higher grades, the student should also be able to:
 ### Lambda Calculus & Evaluation
 - [Lesson Notes: Lambda Calculus, Evaluation](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Lesson%20Notes/Lambda%20Calculation.md)
 - [Task 3 - Mips Report](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Task%203%20-%20MIPS%20Emulator/README.md)
-- [Task 3 - Mips Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/masterTask%203%20-%20MIPS%20Emulator/task4)
+- [Task 3 - Mips Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%203%20-%20MIPS%20Emulator/task3)
 - [Task 4 - Tree vs list Report](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Task%204%20-%20%20Tree%20vs%20list/README.md)
 - [Task 4 - Tree vs list Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%204%20-%20%20Tree%20vs%20list/task4)
