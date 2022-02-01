@@ -49,18 +49,17 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:lw, rt, rs, imm} ->
-        # TODO: FIX
-        address = Program.load_address(mem, imm) + rs
-        reg = Register.write(reg, rt, address)
+        s = Register.read(reg, rs)
+        value = Program.read_value(mem, s + imm)
+        reg = Register.write(reg, rt, value)
 
         pc = pc + 4
         run(pc, code, reg, mem, out)
 
       {:sw, rt, rs, imm} ->
-        # TODO: CHECK?!
-        s = Register.read(reg, rt)
-        address = Program.load_address(mem, imm) + rs
-        mem = Program.write(mem, address, s)
+        t = Register.read(reg, rt)
+        s = Register.read(reg, rs)
+        mem = Program.write(mem, s + imm, t)
 
         pc = pc + 4
         run(pc, code, reg, mem, out)
@@ -70,7 +69,7 @@ defmodule Emulator do
         t = Register.read(reg, rt)
 
         if s == t do
-          address = Program.load_address(mem, imm)
+          address = Program.read_address(mem, imm)
           pc = address + 4
           run(pc, code, reg, mem, out)
         else

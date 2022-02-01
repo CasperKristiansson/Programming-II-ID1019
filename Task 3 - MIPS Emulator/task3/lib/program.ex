@@ -13,26 +13,15 @@ defmodule Program do
     Enum.at(code, div(pc, 4))
   end
 
-  def load_address([], _) do 0 end
-  def load_address([[{:label, value}, {:word, address}] | tail], data) do
-    if data == value do
-      address
-    else
-      load_address(tail, data)
-    end
+  def read_value(memory, address) do
+    Tree.tree_lookup(address, memory)
   end
 
-  def load_value([[]], _) do raise "Register Empty" end
-  def load_value([[{:label, value}, {:word, address}] | tail], data) do
-    if data == address do
-      value
-    else
-      load_value(tail, data)
-    end
+  def read_address(memory, value) do
+    Tree.tree_traverse(value, memory)
   end
 
   def write(memory, address, value) do
-    0 = rem(address, 4)
-    memory ++ [[{:label, value}, {:word, address}]]
+    Tree.tree_insert(address, value, memory)
   end
 end

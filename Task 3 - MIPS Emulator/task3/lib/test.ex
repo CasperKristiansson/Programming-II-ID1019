@@ -7,21 +7,35 @@ defmodule Test do
     {:prgm,
       [
         {:addi, 1, 1, 5},
-        {:label, :loop},         # $1 <- 1 + 5 = 5
-        {:add, 4, 2, 1},      # $4 <- $2 + $1
-        {:addi, 5, 0, 1},     # $5 <- 0 + 1 = 1
+        {:add, 4, 2, 1},
+        {:lw, 2, 2, 1},
+        {:sw, 2, 1, 5},
+        {:addi, 5, 0, 1},
         {:addi, 6, 0, 2},
+        {:label, :loop},
         {:addi, 5, 5, 1},
         {:out, 5},
         {:out, 6},
-        {:lw, 2, 2, :arg},
-        {:sw, 2, 100, :arg},
-        # {:beq, 5, 6, :loop},
+        {:beq, 5, 6, :loop},
         :halt
       ],
-      [
-        [{:label, :arg}, {:word, 20}]
-      ]
+      Tree.tree_new()
     }
+  end
+
+  def testTree() do
+    lst = Tree.tree_new()
+    lst = Tree.tree_insert(5, 1, lst)
+    lst = Tree.tree_insert(2, 1, lst)
+    lst = Tree.tree_insert(3, 1, lst)
+    lst = Tree.tree_insert(4, 1, lst)
+    lst = Tree.tree_insert(1, 3, lst)
+    lst = Tree.tree_insert(6, "loop", lst)
+    lst = Tree.tree_insert(7, 1, lst)
+    lst = Tree.tree_insert(3, 1, lst)
+    lst = Tree.tree_insert(8, 1, lst)
+    lst = Tree.tree_insert(9, 1, lst)
+
+    Tree.tree_traverse("loop", lst)
   end
 end
