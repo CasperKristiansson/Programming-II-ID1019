@@ -13,7 +13,7 @@ defmodule Program do
     Enum.at(code, div(pc, 4))
   end
 
-  def load_address([[]], _) do 0 end
+  def load_address([], _) do 0 end
   def load_address([[{:label, value}, {:word, address}] | tail], data) do
     if data == value do
       address

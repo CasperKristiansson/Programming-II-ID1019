@@ -7,7 +7,7 @@ defmodule Test do
     {:prgm,
       [
         {:addi, 1, 1, 5},
-        {:label, :l},     # $1 <- 1 + 5 = 5
+        {:label, :loop},         # $1 <- 1 + 5 = 5
         {:add, 4, 2, 1},      # $4 <- $2 + $1
         {:addi, 5, 0, 1},     # $5 <- 0 + 1 = 1
         {:addi, 6, 0, 2},
@@ -16,7 +16,7 @@ defmodule Test do
         {:out, 6},
         {:lw, 2, 2, :arg},
         {:sw, 2, 100, :arg},
-        {:beq, 5, 6, :loop},
+        # {:beq, 5, 6, :loop},
         :halt
       ],
       [

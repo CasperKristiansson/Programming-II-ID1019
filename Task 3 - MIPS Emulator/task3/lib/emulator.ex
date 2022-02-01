@@ -16,7 +16,7 @@ defmodule Emulator do
     case next do
       :halt ->
         out = Out.close(out)
-        { reg, mem, out}
+        { reg, mem, out }
 
       {:out, rs} ->
         s = Register.read(reg, rs)
@@ -49,6 +49,7 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:lw, rt, rs, imm} ->
+        # TODO: FIX
         address = Program.load_address(mem, imm) + rs
         reg = Register.write(reg, rt, address)
 
@@ -56,6 +57,7 @@ defmodule Emulator do
         run(pc, code, reg, mem, out)
 
       {:sw, rt, rs, imm} ->
+        # TODO: CHECK?!
         s = Register.read(reg, rt)
         address = Program.load_address(mem, imm) + rs
         mem = Program.write(mem, address, s)
