@@ -1,4 +1,4 @@
-defmodule SolutioneOne do
+defmodule SolutionOne do
   @moduledoc """
   Create a list of all integers between 2 and the given number n.
   You can use the call Enum.to_list (2..n) to create the list of numbers.
