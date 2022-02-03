@@ -9,4 +9,8 @@ defmodule Test do
   def test2 do
     SolutionTwo.primes(100)
   end
+
+  def test3 do
+    SolutionThree.primes(100)
+  end
 end
