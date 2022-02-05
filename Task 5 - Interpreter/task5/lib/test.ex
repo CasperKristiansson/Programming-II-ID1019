@@ -1,6 +1,7 @@
 defmodule Test do
   @moduledoc """
   """
+
   def test1() do
     env = Env.new()
     env = Env.add(:foo, 42, env)
@@ -46,5 +47,15 @@ defmodule Test do
     e5 = Eager.eval_match({:cons, {:var, :x}, {:var, :x}}, {:a, :b}, [])
 
     {e1, e2, e3, e4, e5}
+  end
+
+  def test4() do
+    seq = [{:match, {:var, :x}, {:atm, :a}},
+          {:match, {:var, :y}, {:cons, {:var, :x}, {:atm, :b}}},
+          {:match, {:cons, :ignore, {:var, :z}}, {:var, :y}},
+          {:var, :z}
+        ]
+
+    Eager.eval(seq)
   end
 end
