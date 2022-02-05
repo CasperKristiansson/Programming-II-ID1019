@@ -29,8 +29,11 @@ defmodule Env do
     end
   end
 
-  def args([], [], closure) do closure end
-  def args([par | pars], [str | strs], closure) do
-    [{par, str} | args(pars, strs, closure)]
+  # def args([], [], closure) do closure end
+  # def args([par | pars], [str | strs], closure) do
+  #   [{par, str} | args(pars, strs, closure)]
+  # end
+  def args(pars, args, closure) do
+    List.zip([pars, args]) ++ closure
   end
 end

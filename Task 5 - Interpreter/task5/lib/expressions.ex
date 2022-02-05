@@ -61,9 +61,13 @@ defmodule Eager do
             :error
           {:ok, strs} ->
             env = Env.args(par, strs, closure)
-            eval_seq(seq, env)
+            eval_seq(seq, env) #TODO <- Problem here, empty seq
         end
     end
+  end
+  def eval_expr({:fun, id}, _) do
+    {par, seq} = apply(Prgm, id, [])
+    {:ok, {:closure, par, [], seq}}
   end
 
 
@@ -108,6 +112,7 @@ defmodule Eager do
         end
     end
   end
+  def eval_seq([], env) do env end
 
 
   def extract_vars({:atm, _}, v) do v end

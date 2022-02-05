@@ -80,4 +80,15 @@ defmodule Test do
 
     Eager.eval_seq(seq, Env.new())
   end
+
+  def test7() do
+    seq = [{:match, {:var, :x},
+            {:cons, {:atm, :a}, {:cons, {:atm, :b}, {:atm, []}}}},
+          {:match, {:var, :y},
+            {:cons, {:atm, :c}, {:cons, {:atm, :d}, {:atm, []}}}},
+          {:apply, {:fun, :append}, [{:var, :x}, {:var, :y}]}
+          ]
+
+    Eager.eval_seq(seq, Env.new())
+  end
 end
