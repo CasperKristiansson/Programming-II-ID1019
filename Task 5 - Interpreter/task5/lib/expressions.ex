@@ -43,6 +43,28 @@ defmodule Eager do
         eval_cls(cls, str, env)
     end
   end
+  def eval_expr({:lambda, par, free, seq}, env) do
+    case Env.closure(free, env) do
+      :error ->
+        :error
+      closure ->
+        {:ok, {:closure, par, seq, closure}}
+    end
+  end
+  def eval_expr({:apply, expr, args}, env) do
+    case eval_expr(expr, env) do
+      :error ->
+        :error
+      {:ok, {:closure, par, seq, closure}} ->
+        case eval_args(args, env) do
+          :error ->
+            :error
+          {:ok, strs} ->
+            env = Env.args(par, strs, closure)
+            eval_seq(seq, env)
+        end
+    end
+  end
 
 
   def eval_match(:ignore, _, env) do {:ok, env} end
@@ -103,6 +125,16 @@ defmodule Eager do
         eval_cls(cls, str, env)
       {:ok, env} ->
         eval_seq(seq, env)
+    end
+  end
+
+  def eval_args([], _) do [] end
+  def eval_args([exp | tail], env) do
+    case eval_expr(exp, env) do
+      :error ->
+        :error
+      {:ok, str} ->
+        {:ok, [str | eval_args(tail, env)]}
     end
   end
 end

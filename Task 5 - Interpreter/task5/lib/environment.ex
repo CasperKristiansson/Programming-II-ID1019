@@ -18,4 +18,19 @@ defmodule Env do
       [{id, str} | remove(ids, env)]
     end
   end
+
+  def closure([], _) do [] end
+  def closure([head | tail], env) do
+    case lookup(head, env) do
+      :nil ->
+        :error
+      {_, str} ->
+        [{head, str} | closure(tail, env)]
+    end
+  end
+
+  def args([], [], closure) do closure end
+  def args([par | pars], [str | strs], closure) do
+    [{par, str} | args(pars, strs, closure)]
+  end
 end
