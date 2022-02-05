@@ -1,6 +1,5 @@
 defmodule Env do
   @moduledoc """
-
   """
   def new() do [] end
 
@@ -18,5 +17,4 @@ defmodule Env do
       [{id, str} | remove(ids, env)]
     end
   end
-
 end
