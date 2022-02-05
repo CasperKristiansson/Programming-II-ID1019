@@ -2,6 +2,17 @@ defmodule Eager do
   @moduledoc """
   """
 
+
+  def eval(exp) do
+    case eval_seq(exp, Env.new()) do
+      :error ->
+        :error
+      {:ok, str} ->
+        str
+    end
+  end
+
+
   def eval_expr({:atm, id}, _) do {:ok, id} end
   def eval_expr({:var, id}, env) do
     case Env.lookup(id, env) do
@@ -24,6 +35,15 @@ defmodule Eager do
         end
     end
   end
+  def eval_expr({:case, expr, cls}, env) do
+    case eval_expr(expr, env) do
+      :error ->
+        :error
+      {:ok, str} ->
+        eval_cls(cls, str, env)
+    end
+  end
+
 
   def eval_match(:ignore, _, env) do {:ok, env} end
   def eval_match({:atm, id}, id, env) do {:ok, env} end
@@ -47,7 +67,9 @@ defmodule Eager do
   end
   def eval_match(_, _, _) do :fail end
 
+
   def eval_scope(exp, env) do Env.remove(extract_vars(exp, []), env) end
+
 
   def eval_seq([exp], env) do eval_expr(exp, env) end
   def eval_seq([{:match, exp1, exp2} | tail], env) do
@@ -65,6 +87,7 @@ defmodule Eager do
     end
   end
 
+
   def extract_vars({:atm, _}, v) do v end
   def extract_vars({:var, id}, v) do [id | v] end
   def extract_vars({:cons, exp1, exp2}, v) do
@@ -72,12 +95,14 @@ defmodule Eager do
   end
   def extract_vars(:ignore, v) do v end
 
-  def eval(exp) do
-    case eval_seq(exp, Env.new()) do
-      :error ->
-        :error
-      {:ok, str} ->
-        str
+
+  def eval_cls([], _, _, _) do :error end
+  def eval_cls([{:clause, ptr, seq} | cls], str, env) do
+    case eval_match(ptr, str, env) do
+      :fail ->
+        eval_cls(cls, str, env)
+      {:ok, env} ->
+        eval_seq(seq, env)
     end
   end
 end

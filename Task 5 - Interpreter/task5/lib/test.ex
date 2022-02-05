@@ -58,4 +58,16 @@ defmodule Test do
 
     Eager.eval(seq)
   end
+
+  def test5() do
+    seq = [{:match, {:var, :x}, {:atm, :a}},
+            {:case, {:var, :x},
+              [{:clause, {:atm, :b}, [{:atm, :ops}]},
+                {:clause, {:atm, :a}, [{:atm, :yes}]}
+              ]
+            }
+          ]
+
+    Eager.eval_seq(seq, Env.new())
+  end
 end
