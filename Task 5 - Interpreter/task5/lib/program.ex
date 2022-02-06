@@ -12,6 +12,5 @@ defmodule Prgm do
         }]
       }]
     }
-    # {{:a, {:b, :nil}}, {:c, {:d, :nil}}}
   end
 end

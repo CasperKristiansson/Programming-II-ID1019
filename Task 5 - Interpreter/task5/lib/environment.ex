@@ -29,11 +29,16 @@ defmodule Env do
     end
   end
 
-  # def args([], [], closure) do closure end
-  # def args([par | pars], [str | strs], closure) do
-  #   [{par, str} | args(pars, strs, closure)]
-  # end
-  def args(pars, args, closure) do
-    List.zip([pars, args]) ++ closure
+  @doc """
+  Works until last task where the goal is to use named functions.
+  The other type works inall cases.
+
+  def args([], [], closure) do closure end
+  def args([par | pars], [str | strs], closure) do
+    [{par, str} | args(pars, strs, closure)]
+  end
+  """
+  def args(pars, strs, closure) do
+    List.zip([pars, strs]) ++ closure
   end
 end

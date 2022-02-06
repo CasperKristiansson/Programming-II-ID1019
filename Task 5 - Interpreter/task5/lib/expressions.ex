@@ -2,7 +2,6 @@ defmodule Eager do
   @moduledoc """
   """
 
-
   def eval(exp) do
     case eval_seq(exp, Env.new()) do
       :error ->
@@ -61,13 +60,25 @@ defmodule Eager do
             :error
           {:ok, strs} ->
             env = Env.args(par, strs, closure)
-            eval_seq(seq, env) #TODO <- Problem here, empty seq
+            eval_seq(seq, env)
         end
     end
   end
   def eval_expr({:fun, id}, _) do
     {par, seq} = apply(Prgm, id, [])
-    {:ok, {:closure, par, [], seq}}
+    {:ok, {:closure, par, seq, []}}
+  end
+  @doc """
+  TODO: NOT WORKING
+  """
+  def eval_expr({:call, id, expr}, env) do
+    case apply(Prgm, id, []) do
+      :error ->
+        :error
+      {:ok, [{:closure, par, seq, closure}]} ->
+        env = Env.args(par, [expr], closure)
+        eval_seq(seq, env)
+    end
   end
 
 
