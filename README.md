@@ -34,3 +34,9 @@ For higher grades, the student should also be able to:
 - [Task 3 - Mips Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%203%20-%20MIPS%20Emulator/task3)
 - [Task 4 - Tree vs list Report](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Task%204%20-%20%20Tree%20vs%20list/README.md)
 - [Task 4 - Tree vs list Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%204%20-%20%20Tree%20vs%20list/task4)
+
+### Higher order functions
+- [Task 5 - Interpreter Report](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Task%205%20-%20Interpreter/Report%20Task%205%20-%20Interpreter.pdf)
+- [Task 5 - Interpreter Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%205%20-%20Interpreter/task5)
+- [Task 6 - Prime Report](https://github.com/CasperKristiansson/Programming-II-ID1019/blob/master/Task%206%20-%20Prime/Report%20Task%206%20-%20Primes.pdf)
+- [Task 6 - Prime Project](https://github.com/CasperKristiansson/Programming-II-ID1019/tree/master/Task%206%20-%20Prime/task6)
