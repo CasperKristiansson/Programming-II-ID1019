@@ -15,7 +15,7 @@ defmodule Eager do
   def eval_expr({:atm, id}, _) do {:ok, id} end
   def eval_expr({:var, id}, env) do
     case Env.lookup(id, env) do
-      nil ->
+      :nil ->
         :error
       {_, str} ->
         {:ok, str}
@@ -68,18 +68,20 @@ defmodule Eager do
     {par, seq} = apply(Prgm, id, [])
     {:ok, {:closure, par, seq, []}}
   end
-  @doc """
-  TODO: NOT WORKING
-  """
-  def eval_expr({:call, id, expr}, env) do
-    case apply(Prgm, id, []) do
-      :error ->
+  def eval_expr({:call, id, args}, env) do
+		case apply(Prgm, id, []) do
+			:nil ->
         :error
-      {:ok, [{:closure, par, seq, closure}]} ->
-        env = Env.args(par, [expr], closure)
-        eval_seq(seq, env)
-    end
-  end
+			{par, seq} ->
+        case eval_args(args, env) do
+          :error ->
+            :error
+          {:ok, strs} ->
+            env = Env.args(par, strs, env)
+            eval_seq(seq, env)
+        end
+		end
+	end
 
 
   def eval_match(:ignore, _, env) do {:ok, env} end
@@ -134,8 +136,9 @@ defmodule Eager do
   def extract_vars(:ignore, v) do v end
 
 
-  def eval_cls([], _, _, _) do :error end
+  def eval_cls([], _, _) do :error end
   def eval_cls([{:clause, ptr, seq} | cls], str, env) do
+    env = eval_scope(ptr, env)
     case eval_match(ptr, str, env) do
       :fail ->
         eval_cls(cls, str, env)
