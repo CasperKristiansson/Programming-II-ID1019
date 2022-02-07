@@ -68,20 +68,20 @@ defmodule Eager do
     {par, seq} = apply(Prgm, id, [])
     {:ok, {:closure, par, seq, []}}
   end
-  def eval_expr({:call, id, args}, env) do
-		case apply(Prgm, id, []) do
-			:nil ->
-        :error
-			{par, seq} ->
-        case eval_args(args, env) do
-          :error ->
-            :error
-          {:ok, strs} ->
-            env = Env.args(par, strs, env)
-            eval_seq(seq, env)
-        end
-		end
-	end
+def eval_expr({:call, id, args}, env) do
+  case apply(Prgm, id, []) do
+    :nil ->
+      :error
+    {par, seq} ->
+      case eval_args(args, env) do
+        :error ->
+          :error
+        {:ok, strs} ->
+          env = Env.args(par, strs, env)
+          eval_seq(seq, env)
+      end
+  end
+end
 
 
   def eval_match(:ignore, _, env) do {:ok, env} end
