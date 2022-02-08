@@ -18,15 +18,12 @@ defmodule SolutionTwo do
     recursion(lst, res)
   end
 
+  def recursion([], res) do res end
   def recursion([head | tail], res) do
-    if tail == [] do
-      res
+    if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
+      recursion(tail, res)
     else
-      if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
-        recursion(tail, res)
-      else
-        recursion(tail, res ++ [head])
-      end
+      recursion(tail, res ++ [head])
     end
   end
 end

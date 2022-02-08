@@ -13,15 +13,12 @@ defmodule SolutionThree do
     Enum.reverse(recursion(lst, res))
   end
 
+  def recursion([], res) do res end
   def recursion([head | tail], res) do
-    if tail == [] do
-      res
+    if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
+      recursion(tail, res)
     else
-      if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
-        recursion(tail, res)
-      else
-        recursion(tail, [head | res])
-      end
+      recursion(tail, [head | res])
     end
   end
 end

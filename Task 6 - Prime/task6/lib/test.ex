@@ -3,15 +3,15 @@ defmodule Test do
   This is a test module for the three different subtasks.
   """
   def test1 do
-    SolutionOne.primes(100)
+    SolutionOne.primes(101)
   end
 
   def test2 do
-    SolutionTwo.primes(100)
+    SolutionTwo.primes(101)
   end
 
   def test3 do
-    SolutionThree.primes(100)
+    SolutionThree.primes(101)
   end
 
   def bench() do
