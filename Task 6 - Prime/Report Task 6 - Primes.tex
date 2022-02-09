@@ -6,7 +6,7 @@
     \textbf{Task 6 - Primes}
 }
 \author{Casper Kristiansson}
-\date{2022-02-04}
+\date{2022-02-08}
 
 \maketitle
 
@@ -46,15 +46,12 @@ Because the function will return if \textbf{any} element fulfills the expression
 
 \begin{figure}[H]
 \begin{minted}{elixir}
+  def recursion([], res) do res end
   def recursion([head | tail], res) do
-    if tail == [] do
-      res
+    if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
+      recursion(tail, res)
     else
-      if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
-        recursion(tail, res)
-      else
-        recursion(tail, res ++ [head])
-      end
+      recursion(tail, res ++ [head])
     end
   end
 \end{minted}
@@ -67,20 +64,12 @@ The third algorithm works exactly like algorithm two except that it adds the pri
 
 \begin{figure}[H]
 \begin{minted}{elixir}
-  def primes(n) do
-    lst = Enum.to_list(2..n)
-    res = []
-    Enum.reverse(recursion(lst, res))
-  end
+  def recursion([], res) do res end
   def recursion([head | tail], res) do
-    if tail == [] do
-      res
+    if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
+      recursion(tail, res)
     else
-      if Enum.any?(res, fn(x) -> rem(head, x) == 0 end) do
-        recursion(tail, res)
-      else
-        recursion(tail, [head | res])
-      end
+      recursion(tail, [head | res])
     end
   end
 \end{minted}
