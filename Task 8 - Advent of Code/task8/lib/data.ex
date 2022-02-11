@@ -13,4 +13,16 @@ defmodule Data do
     String.split(file, "\r\n")
     |> Enum.map(&String.to_integer/1)
   end
+
+  def readCoordinates() do
+    file = File.read!("lib/DataCoordinates.txt")
+    list = String.split(file, "\r\n")
+    extractData(list, [], [])
+  end
+
+  def extractData([], directions, steps) do {directions, steps} end
+  def extractData([head | tail], directions, steps) do
+    [direction, step] = String.split(head, " ")
+    extractData(tail, directions ++ [direction], steps ++ [String.to_integer(step)])
+  end
 end
