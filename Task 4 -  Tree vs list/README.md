@@ -77,17 +77,14 @@ end
 Figure six consists of the IO output when running the bench function. In figure six it can be seen that inserting a list grows extremely fast while inserting into a tree remains relatively low. As discussed above this is because the insertion for the list is O(n) while the tree structure is O(log n).
 
 ```bash
-  # benchmark of lists and tree 
-  0                     0
-  0                     0
-  0                     0
-  102                   0
-  204                   0
-  512                   102
-  2048                  102
-  9523                  409
-  40550                 1536
-  198143                3788
+Amount      Run time List (ms)      Run time Tree (ms)      Ratio
+128         0.1                     0                       -
+256         0.2                     0                       -
+512         0.51                    0.1                     5.1
+1024        2.1                     0.1                     21
+2048        9.5                     0.41                    23
+4096        41                      1.5                     27
+8192        200                     3.8                     53
 ```
 *Figure 6: The benchmark between list and tree data structure*
 
