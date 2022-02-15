@@ -3,11 +3,8 @@ defmodule Primes do
   """
   defstruct [:next]
 
-  def prime() do
-    fn() -> {2, fn() -> sieve(z(2), 2) end} end
-  end
   def primes() do
-    %Primes{next: prime()}
+    %Primes{next: fn() -> {2, fn() -> sieve(z(3), 2) end} end}
   end
 
   defimpl Enumerable do
@@ -27,61 +24,30 @@ defmodule Primes do
     end
   end
 
+  def next(primes) do
+    {prime, funcNext} = primes.next.()
+    {prime, %Primes{next: funcNext}}
+  end
+
   def z(n) do
-    fn() -> increaseZ(n + 1) end
+    fn() -> {n, z(n + 1)} end
   end
-
-  def increaseZ(n) do
-    {n, fn() -> increaseZ(n + 1) end}
-  end
-
 
   def filter(func, f) do
     {numb, funcNext} = func.()
-    if rem(numb - 1, f) == 0 || numb - 1 < f do
+    if rem(numb, f) == 0 do
       filter(funcNext, f)
     else
-      {numb - 1, fn() -> filter(funcNext, f) end}
+      {numb, fn() -> filter(funcNext, f) end}
     end
+  end
+
+  def primef() do
+    fn() -> {2, fn() -> sieve(z(3), 2) end} end
   end
 
   def sieve(n, p) do
-    lst = Enum.to_list(2..p)
-    primes = recursionFilter(lst)
-    nextPrime(n, p, primes)
-  end
-
-  def recursionFilter([head | []]) do [head] end
-  def recursionFilter([head | tail]) do
-    [head | recursionFilter(Enum.filter(tail, fn(x) -> rem(x, head) != 0 end))]
-  end
-
-  def nextPrime(n, p, primes) do
-    {numb, funcNext} = n.()
-
-    if isPrime(primes, numb) do
-      {numb, fn() -> nextPrime(funcNext, p, primes ++ [numb]) end}
-    else
-      nextPrime(funcNext, p, primes)
-    end
-  end
-
-  def isPrime([], _) do true end
-  def isPrime([head | tail], p) do
-    if rem(p, head) == 0 do
-      false
-    else
-      isPrime(tail, p)
-    end
-  end
-
-  def primes() do
-    fn() -> {2, fn() -> sieve(z(2), 2) end} end
-  end
-
-  # Now for you to implement the function next/1, it should return a tuple,
-  # the next prime and a Primes struct that represents the continuation.
-  def next(primes) do
-    primes.()
+    {numb, funcNext} = filter(n, p)
+    {numb, fn() -> sieve(funcNext, numb) end}
   end
 end
