@@ -26,10 +26,10 @@ defmodule Solution do
 
   def getThreeValue([], _, _) do :nil end
   def getThreeValue([head | tail], value, sum) do
-    if value < 3 do
-      getThreeValue(tail, value + 1, sum + head)
+    if value == 2 do
+      sum + head
     else
-      sum
+      getThreeValue(tail, value + 1, sum + head)
     end
   end
 
