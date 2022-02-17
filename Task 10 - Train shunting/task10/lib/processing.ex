@@ -35,6 +35,6 @@ defmodule Processing do
   Returns the first position of y in the list xs.
   """
   def position(xs, y) do
-    Enum.find_index(xs, fn(x) -> x == y end)
+    Enum.find_index(xs, fn(x) -> x == y end) + 1
   end
 end
