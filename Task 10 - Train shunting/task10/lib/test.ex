@@ -5,12 +5,16 @@ defmodule Test do
     append = Processing.append([1,2,3,4,5], [6,7,8,9,10])
     member = Processing.member([1,2,3,4,5], 3)
     position = Processing.position([1,2,3,4,5], 3)
+    split = Processing.split([:a,:b,:c], :a)
+    split2 = Processing.split([:a,:b,:c], :b)
     {
       :take, take,
       :drop, drop,
       :append, append,
       :member, member,
-      :position, position
+      :position, position,
+      :split, split,
+      :split2, split2
     }
   end
 
@@ -31,6 +35,13 @@ defmodule Test do
     states = Moves.move([{:one, 1},{:two, 1},{:one, -1}], {[:a,:b],[],[]})
     {
       :states, states
+    }
+  end
+
+  def findMoves() do
+    moves = Shunt.find([:a,:b], [:b,:a])
+    {
+      :moves, moves
     }
   end
 end

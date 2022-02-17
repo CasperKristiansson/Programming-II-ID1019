@@ -1,4 +1,8 @@
 defmodule Moves do
+  @doc """
+  Applies a move on a state by either applying the move to track
+  one or two.
+  """
   def single({:one, steps}, {main, one, two}) do
     cond do
       steps > 0 ->
@@ -40,6 +44,9 @@ defmodule Moves do
     end
   end
 
+  @doc """
+  Applies multiple moves on a satate and returns each state
+  """
   def move([], state) do [state] end
   def move([move | moves], state) do
     nextState = single(move, state)

@@ -37,4 +37,8 @@ defmodule Processing do
   def position(xs, y) do
     Enum.find_index(xs, fn(x) -> x == y end) + 1
   end
+
+  def split(xs, x) do
+    {take(xs, position(xs, x) - 1), drop(xs, position(xs, x))}
+  end
 end
