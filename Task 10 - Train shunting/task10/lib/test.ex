@@ -55,4 +55,14 @@ defmodule Test do
       :movesUsed, movesUsed
     }
   end
+
+  def findCompress() do
+    moves = Shunt.find([:c, :a, :b, :d], [:d, :c, :b, :a])
+    movesCompressed = Shunt.compress([{:two,-1},{:one,1},{:one,-1},{:two,1}])
+    # movesUsed = Moves.move(moves, {[:c, :a, :b, :d],[],[]})
+    {
+      :moves, moves,
+      :movesCompressed, movesCompressed
+    }
+  end
 end
