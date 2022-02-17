@@ -39,4 +39,10 @@ defmodule Moves do
         {main, one, two}
     end
   end
+
+  def move([], state) do [state] end
+  def move([move | moves], state) do
+    nextState = single(move, state)
+    [state] ++ move(moves, nextState)
+  end
 end
