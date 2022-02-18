@@ -14,7 +14,7 @@ defmodule Shunt do
       {:two, -(Enum.count(hs))}
     ]
 
-    moves ++ find(hs ++ ts, ys)
+    moves ++ find(ts ++ hs, ys)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule Shunt do
     if Enum.count(hs) == 0 do
       [] ++ few(ts, ys)
     else
-      moves ++ few(hs ++ ts, ys)
+      moves ++ few(ts ++ hs, ys)
     end
   end
 
