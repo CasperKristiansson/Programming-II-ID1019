@@ -3,7 +3,6 @@ defmodule Shunt do
   Finding moves to rearange wagons in xs to get ys.
   """
   def find(_, []) do [] end
-  def find([], _) do [] end
   def find(xs, [y | ys]) do
     {hs, ts} = Processing.split(xs, y)
 
@@ -21,7 +20,6 @@ defmodule Shunt do
   Finds moves but removes if the lower track becomes 0.
   """
   def few(_, []) do [] end
-  def few([], _) do [] end
   def few(xs, [y | ys]) do
     {hs, ts} = Processing.split(xs, y)
 
@@ -44,7 +42,6 @@ defmodule Shunt do
   """
   def compress(ms) do
     ns = rules(ms)
-    IO.inspect({ns, ms})
     cond do
       ns == ms ->
         ms
@@ -76,6 +73,44 @@ defmodule Shunt do
         end
       true ->
         [{track, step}] ++ rules(moves)
+    end
+  end
+
+  def fewer(_, _, _, []) do [] end
+  def fewer(ms, hs, ts, [y | ys]) do
+    cond do
+      Processing.member(ms, y) ->
+        {hsSplit, tsSplit} = Processing.split(ms, y)
+        moves = [
+          {:one, 1 + Enum.count(tsSplit)},
+          {:two, Enum.count(hsSplit)},
+          {:one, -1}
+        ]
+
+        [{ms, hs, ts}] = Enum.take(Moves.move(moves, {ms, hs, ts}), -1)
+        moves ++ fewer(ms, hs, ts, ys)
+
+      Processing.member(hs, y) ->
+        {hsSplit, _} = Processing.split(hs, y)
+        moves = [
+          {:one, -Enum.count(hsSplit)},
+          {:two, Enum.count(hsSplit)},
+          {:one, -1}
+        ]
+
+        [{ms, hs, ts}] = Enum.take(Moves.move(moves, {ms, hs, ts}), -1)
+        moves ++ fewer(ms, hs, ts, ys)
+
+      Processing.member(ts, y) ->
+        {hsSplit, _} = Processing.split(ts, y)
+        moves = [
+          {:two, -Enum.count(hsSplit)},
+          {:one, Enum.count(hsSplit)},
+          {:two, -1}
+        ]
+
+        [{ms, hs, ts}] = Enum.take(Moves.move(moves, {ms, hs, ts}), -1)
+        moves ++ fewer(ms, hs, ts, ys)
     end
   end
 end
