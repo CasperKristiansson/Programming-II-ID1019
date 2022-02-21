@@ -90,16 +90,16 @@ defmodule SolutionThree do
   """
   def cost([]) do {0, :na} end
   def cost(seq) do
-    {cost, tree, _} = cost(Enum.sort(seq), Memo.new())
+    {cost, tree, _} = cost(Enum.sort(seq), Memo.treeNew())
     {cost, tree}
   end
   def cost([s], mem) do {0, s, mem} end
   def cost([s | rest] = seq, mem) do
     {c, t, mem} = cost(rest, s, [s], [], mem)
-    {c, t, Memo.addBinary(mem, seq, {c, t})}
+    {c, t, Memo.treeInsert(mem, seq, {c, t})}
   end
   def check(seq, mem) do
-    case Memo.lookupBinary(mem, seq) do
+    case Memo.treeLookup(mem, seq) do
       nil ->
         cost(seq, mem)
       {c, t} ->
