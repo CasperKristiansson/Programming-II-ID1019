@@ -71,7 +71,7 @@ defmodule SolutionTwo do
   end
   def cost([s], l, [], right, mem) do
     {cost, tree, mem} = check(right, mem)
-    {cost + s + l, {tree, s}, mem}
+    {cost + s + l, {s, tree}, mem}
   end
   def cost([s | rest], l, left, right, mem) do
     {costLeft, treeLeft, mem} = cost(rest, s + l, [s | left], right, mem)
@@ -117,7 +117,7 @@ defmodule SolutionThree do
   end
   def cost([s], l, [], right, mem) do
     {cost, tree, mem} = check(Enum.reverse(right), mem)
-    {cost + s + l, {tree, s}, mem}
+    {cost + s + l, {s, tree}, mem}
   end
   def cost([s | rest], l, left, right, mem) do
     {costLeft, treeLeft, mem} = cost(rest, s + l, [s | left], right, mem)
