@@ -16,16 +16,20 @@ defmodule SolutionOne do
 
   """
   def cost([]) do 0 end
-  def cost([_]) do 0 end
+  def cost([s]) do {0, s} end
   def cost(seq) do cost(seq, 0, [], []) end
   def cost([], l, left, right) do
-    cost(left) + cost(right) + l
+    {costLeft, treeLeft} = cost(left)
+    {costRight, treeRight} = cost(right)
+    {costLeft + costRight + l, {treeLeft, treeRight}}
   end
   def cost([s], l, [], right) do
-    cost(right) + s + l
+    {costRight, treeRight} = cost(right)
+    {costRight + l, {s, treeRight}}
   end
   def cost([s], l, left, []) do
-    cost(left) + s + l
+    {costLeft, treeLeft} = cost(left)
+    {costLeft + l, {treeLeft, s}}
   end
   def cost([s | rest], l, left, right) do
     costLeft = cost(rest, s + l, [s | left], right)
