@@ -25,11 +25,11 @@ defmodule SolutionOne do
   end
   def cost([s], l, [], right) do
     {costRight, treeRight} = cost(right)
-    {costRight + l, {s, treeRight}}
+    {costRight + l + s, {s, treeRight}}
   end
   def cost([s], l, left, []) do
     {costLeft, treeLeft} = cost(left)
-    {costLeft + l, {treeLeft, s}}
+    {costLeft + l + s, {s, treeLeft}}
   end
   def cost([s | rest], l, left, right) do
     costLeft = cost(rest, s + l, [s | left], right)
