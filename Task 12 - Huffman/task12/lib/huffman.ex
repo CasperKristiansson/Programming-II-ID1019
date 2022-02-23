@@ -1,4 +1,8 @@
 defmodule Huffman do
+  @moduledoc """
+  Algorithm: https://www.youtube.com/watch?v=dM6us854Jk0
+  ASCII table: https://www.techonthenet.com/ascii/chart.php
+  """
   def sample do
     'the quick brown fox jumps over the lazy dog
     this is a sample text that we will use when we build
@@ -15,9 +19,11 @@ defmodule Huffman do
     sample = sample()
     tree = tree(sample)
     encode = encode_table(tree)
-    # decode = decode_table(tree)
-    # text = text()
-    # seq = encode(text, encode)
+    IO.inspect(encode)
+    decode = decode_table(tree)
+    text = text()
+    seq = encode(text, encode)
+    seq
     # decode(seq, decode)
   end
 
@@ -31,22 +37,16 @@ defmodule Huffman do
     find_path(tree, [])
   end
 
-  def find_path({tree_left, tree_right}, current_path) do
-    paths_left = find_path(tree_left, current_path ++ [0])
-    paths_right = find_path(tree_right, current_path ++ [1])
-
-    paths_left ++ paths_right
-  end
-  def find_path(tree, current_path) do
-    [{tree, current_path}]
-  end
-
+  @doc """
+  Because of the structure of find_path the encode_table could
+  be used here as well.
+  """
   def decode_table(tree) do
-
+    encode_table(tree)
   end
 
   def encode(text, table) do
-
+    get_bits(text, table)
   end
 
   def decode(seq, tree) do
@@ -66,6 +66,7 @@ defmodule Huffman do
         freq(rest, Map.put(freq, char, value + 1))
     end
   end
+
 
   @doc """
   {{{{110, 97}, {111, {98, {100, 13}}}}, 32},
@@ -91,6 +92,30 @@ defmodule Huffman do
       [{{key1, key2}, value1 + value2}] ++ [{key3, value3} | rest]
     else
       [{key3, value3}] ++ insert({key1, value1}, {key2, value2}, rest)
+    end
+  end
+
+
+  def find_path({tree_left, tree_right}, current_path) do
+    paths_left = find_path(tree_left, current_path ++ [0])
+    paths_right = find_path(tree_right, current_path ++ [1])
+
+    paths_left ++ paths_right
+  end
+  def find_path(tree, current_path) do
+    [{tree, current_path}]
+  end
+
+
+  def get_bits([], _) do [] end
+  def get_bits([char | rest], tree) do
+    get_path(char, tree) ++ get_bits(rest, tree)
+  end
+  def get_path(char, [{tree_char, path} | rest]) do
+    if char == tree_char do
+      path
+    else
+      get_path(char, rest)
     end
   end
 end
