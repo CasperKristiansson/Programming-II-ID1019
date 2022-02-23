@@ -23,34 +23,14 @@ defmodule Huffman do
     decode = decode_table(tree)
     text = text()
     seq = encode(text, encode)
-    seq
-    # decode(seq, decode)
+    decode(seq, decode)
   end
+
 
   def tree(sample) do
     freq = freq(sample)
     freq = Enum.sort(freq, fn({_, x}, {_, y}) -> x < y end)
     huffman(freq)
-  end
-
-  def encode_table(tree) do
-    find_path(tree, [])
-  end
-
-  @doc """
-  Because of the structure of find_path the encode_table could
-  be used here as well.
-  """
-  def decode_table(tree) do
-    encode_table(tree)
-  end
-
-  def encode(text, table) do
-    get_bits(text, table)
-  end
-
-  def decode(seq, tree) do
-
   end
 
   @doc """
@@ -66,7 +46,6 @@ defmodule Huffman do
         freq(rest, Map.put(freq, char, value + 1))
     end
   end
-
 
   @doc """
   {{{{110, 97}, {111, {98, {100, 13}}}}, 32},
@@ -96,6 +75,10 @@ defmodule Huffman do
   end
 
 
+  def encode_table(tree) do
+    find_path(tree, [])
+  end
+
   def find_path({tree_left, tree_right}, current_path) do
     paths_left = find_path(tree_left, current_path ++ [0])
     paths_right = find_path(tree_right, current_path ++ [1])
@@ -106,6 +89,18 @@ defmodule Huffman do
     [{tree, current_path}]
   end
 
+  @doc """
+  Because of the structure of find_path the encode_table could
+  be used here as well.
+  """
+  def decode_table(tree) do
+    encode_table(tree)
+  end
+
+
+  def encode(text, table) do
+    get_bits(text, table)
+  end
 
   def get_bits([], _) do [] end
   def get_bits([char | rest], tree) do
@@ -116,6 +111,23 @@ defmodule Huffman do
       path
     else
       get_path(char, rest)
+    end
+  end
+
+
+  def decode([], _) do [] end
+  def decode(seq, tree) do
+    {char, rest} = decode_char(seq, 1, tree)
+    [char | decode(rest, tree)]
+  end
+
+  def decode_char(seq, n, table) do
+    {code, rest} = Enum.split(seq, n)
+    case List.keyfind(table, code, 1) do
+      {char, _} ->
+        {char, rest};
+      nil ->
+        decode_char(seq, n + 1, table)
     end
   end
 end
