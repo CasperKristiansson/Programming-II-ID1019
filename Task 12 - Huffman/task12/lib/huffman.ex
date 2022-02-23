@@ -106,6 +106,7 @@ defmodule Huffman do
   def get_bits([char | rest], tree) do
     get_path(char, tree) ++ get_bits(rest, tree)
   end
+
   def get_path(char, [{tree_char, path} | rest]) do
     if char == tree_char do
       path
@@ -129,5 +130,41 @@ defmodule Huffman do
       nil ->
         decode_char(seq, n + 1, table)
     end
+  end
+
+
+  def read(file) do
+    {:ok, file} = File.open(file, [:read, :utf8])
+    binary = IO.read(file, :all)
+    File.close(file)
+    case :unicode.characters_to_list(binary, :utf8) do
+    {:incomplete, list, _} ->
+      list
+    list ->
+      list
+    end
+  end
+
+  @doc """
+  The bench method starts of by reading a file and creating a huffman tree for it.
+  The function will than encode the exact same text and decode it again.
+  """
+  def bench() do
+    text = read("data.txt")
+    {tree, tree_time} = time(fn -> tree(text) end)
+    {encode_table, encode_table_time} = time(fn -> encode_table(tree) end)
+    {decode_table, decode_table_time} = time(fn -> decode_table(tree) end)
+    {encode, encode_time} = time(fn -> encode(text, encode_table) end)
+    {_, decoded_time} = time(fn -> decode(encode, decode_table) end)
+
+    IO.puts("Tree Build Time: #{tree_time} us")
+    IO.puts("Encode Table Time: #{encode_table_time} us")
+    IO.puts("Decode Table Time: #{decode_table_time} us")
+    IO.puts("Encode Time: #{encode_time} us")
+    IO.puts("Decode Time: #{decoded_time} us")
+  end
+
+  def time(func) do
+    {func.(), elem(:timer.tc(fn () -> func.() end), 0)}
   end
 end
