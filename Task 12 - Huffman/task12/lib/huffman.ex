@@ -137,11 +137,12 @@ defmodule Huffman do
     {:ok, file} = File.open(file, [:read, :utf8])
     binary = IO.read(file, :all)
     File.close(file)
+    length = byte_size(binary)
     case :unicode.characters_to_list(binary, :utf8) do
-    {:incomplete, list, _} ->
-      list
+    {:incomplete, list, rest} ->
+      {list, length - byte_size(rest)}
     list ->
-      list
+      {list, length}
     end
   end
 
@@ -150,18 +151,22 @@ defmodule Huffman do
   The function will than encode the exact same text and decode it again.
   """
   def bench() do
-    text = read("data.txt")
+    {text, length} = read("data.txt")
     {tree, tree_time} = time(fn -> tree(text) end)
     {encode_table, encode_table_time} = time(fn -> encode_table(tree) end)
     {decode_table, decode_table_time} = time(fn -> decode_table(tree) end)
     {encode, encode_time} = time(fn -> encode(text, encode_table) end)
     {_, decoded_time} = time(fn -> decode(encode, decode_table) end)
 
+    e = div(length(encode), 8)
+    r = Float.round(e / length, 3)
+
     IO.puts("Tree Build Time: #{tree_time} us")
     IO.puts("Encode Table Time: #{encode_table_time} us")
     IO.puts("Decode Table Time: #{decode_table_time} us")
     IO.puts("Encode Time: #{encode_time} us")
     IO.puts("Decode Time: #{decoded_time} us")
+    IO.puts("Compression Ratio: #{r}")
   end
 
   def time(func) do
