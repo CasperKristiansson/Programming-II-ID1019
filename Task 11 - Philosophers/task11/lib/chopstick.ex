@@ -18,7 +18,7 @@ defmodule Chopstick do
 
   def gone() do
     receive do
-      :return ->
+      :relase ->
         available()
       :quit ->
         :ok
@@ -33,11 +33,21 @@ defmodule Chopstick do
     end
   end
 
+  def request({:id, stick}, timeout) do
+    send(stick, {:request, self()})
+    receive do
+      :granted ->
+        :ok
+      after timeout ->
+        :timeouted
+    end
+  end
+
   def quit({:id, stick}) do
     send(stick, :quit)
   end
 
-  def return({:id, stick}) do
-    send(stick, :return)
+  def release({:id, stick}) do
+    send(stick, :relase)
   end
 end

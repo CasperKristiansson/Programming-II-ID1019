@@ -15,30 +15,39 @@ defmodule Philosopher do
 
   def dream(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is hungry")
-    sleep(1000)
+    sleep(200)
     eat(hunger, right, left, name, ctrl)
   end
 
   def eat(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is eating")
 
-    case Chopstick.request(right) do
+    case Chopstick.request(right, 200) do
       :ok ->
         IO.puts("#{name} right received a chopstick!")
-        case Chopstick.request(left) do
+        case Chopstick.request(left, 200) do
           :ok ->
             IO.puts("#{name} left received a chopstick!")
             done(hunger, right, left, name, ctrl)
+          :timeouted ->
+            IO.puts("#{name} left chopstick timeouted!")
+            Chopstick.release(right)
+            sleep(200)
+            eat(hunger, right, left, name, ctrl)
         end
+      :timeouted ->
+        IO.puts("#{name} right chopstick timeouted!")
+        sleep(200)
+        eat(hunger, right, left, name, ctrl)
     end
   end
 
   def done(hunger, right, left, name, ctrl) do
     IO.puts("#{name} has finished eating")
 
-    sleep(1000)
-    Chopstick.return(right)
-    Chopstick.return(left)
+    sleep(200)
+    Chopstick.release(right)
+    Chopstick.release(left)
 
     dream(hunger - 1, right, left, name, ctrl)
   end
