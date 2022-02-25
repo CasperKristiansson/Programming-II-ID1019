@@ -1,0 +1,172 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
+\begin{document}
+\title{
+    \textbf{Task 11 - Philosophers and Concurrency}
+}
+\author{Casper Kristiansson}
+\date{\today}
+\maketitle
+
+\section*{Introduction}
+Task eleven of the course Programming II consisted of implementing a concurrency problem in elixir. The task basic principle involves managing different processes which has overlapping resources. For example, in this problem five different processes needs two items to work (chopsticks), while all the processes together only share a total of five items (chopsticks). This means that the different processes need to share resources and wait for their turn before they can perform a certain action.
+
+\section*{Result}
+The task can be divided into three different sections, one for controlling and creating sub-processes (chopsticks), one for managing and creating the main sub-processes (philosophers) and lastly a solution for managing deadlocks.
+
+\subsection*{Managing Chopsticks}
+The first part of the task was to oversee the chopstick processes. To create a process in elixir the author uses the function \textbf{spawn\_link} which receives a function as a parameter. The program than needs two different function to manage if a chopstick is available or gone. The method uses the receive statement in elixir which will wait until it receives a message. When it does, the process (chopstick) is being used by a philosopher. Then the method sends a message to the processes that the philosopher is granted access to it. The method also initiate the gone method which will wait until the chopstick receives another message.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def start do
+    stick = spawn_link(fn -> available() end)
+    {:id, stick}
+  end
+  def available() do
+    receive do
+      {:request, from} ->
+        send(from, :granted)
+        gone()
+      :quit ->
+        :ok
+    end
+  end
+\end{minted}
+\caption{Function for creating a new process and checking if the process is available}
+\label{Figure:1}
+\end{figure}
+
+The program than uses a \textbf{request} function which receives a stick as parameter and waits until a given chopstick is available by checking if the return message is \textit{:granted}. This is the function which could cause the program to receive deadlocks, because it will wait until it receives a message which is when the chopstick is available and not being used.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def request({:id, stick}) do
+    send(stick, {:request, self()})
+    receive do
+      :granted ->
+        :ok
+    end
+  end
+\end{minted}
+\caption{Sending a request to receive a chopstick}
+\label{Figure:2}
+\end{figure}
+
+The last part of this subtask is to create a function for handling if a chopstick should be released and if it should be terminated. These functions are implemented by simply passing a message to the process.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def quit({:id, stick}) do
+    send(stick, :quit)
+  end
+  def release({:id, stick}) do
+    send(stick, :relase)
+  end
+\end{minted}
+\caption{Terminating and returning a process}
+\label{Figure:3}
+\end{figure}
+
+\subsection*{Managing Philosophers}
+The next part of the task is to manage the different philosophers. The module contains different functions for handling the philosophers different states \textit{dream, eat, done}. The program starts of by creating a process which receives two different chopstick process ids, hunger level, name, and a controller. The program starts of by spawning a new process for the function dream. The dream function will than wait a random amount of time before calling the function eat.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def start(hunger, right, left, name, ctrl) do
+    spawn_link(fn -> dream(hunger, right, left, name, ctrl) end)
+  end
+
+  def dream(0, _, _, name, ctrl) do
+    send(ctrl, :done)
+  end
+  def dream(hunger, right, left, name, ctrl) do
+    sleep(200)
+    eat(hunger, right, left, name, ctrl)
+  end
+\end{minted}
+\caption{Creating and managing the dream state}
+\label{Figure:4}
+\end{figure}
+
+The next part is to implement the function to oversee the state for eating. The process main goal is to receive the correct chopsticks before the philosopher can eat. The processes do this by simply sending a request to the Chopstick module and waits until the desired chopstick is available. This is the second part of the program which causes the deadlocks.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def eat(hunger, right, left, name, ctrl) do
+    case Chopstick.request(right) do
+      :ok ->
+        case Chopstick.request(left) do
+          :ok ->
+            done(hunger, right, left, name, ctrl)
+        end
+    end
+  end
+\end{minted}
+\caption{Requesting chopstick processes}
+\label{Figure:5}
+\end{figure}
+
+The next part of this task is to implement the module for managing the situation where the philosophers is done eating. The function simply starts of by releasing the chopsticks and then calling the dream function again with one less hunger. The function than will recursively do this until the dream function receives a hunger of zero, which means that the philosopher is done eating.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def done(hunger, right, left, name, ctrl) do
+    Chopstick.release(right)
+    Chopstick.release(left)
+    dream(hunger - 1, right, left, name, ctrl)
+  end
+\end{minted}
+\caption{Releasing processes and calling the next recursion loop}
+\label{Figure:6}
+\end{figure}
+
+\subsection*{Deadlooks}
+The current solution of the problem could cause deadlocks where the different philosophers could be waiting for processes after each other which means that the program will get stuck. A way to manage this is to create a maximum timeout which should represent how long a philosopher is willing to wait for a chopstick. This can easily be solved by using the term \textbf{after} in elixir. The term will cause the program to wait a maximum of amount of time for a message to arrive and if it doesn’t it will return \textbf(:timeouted)
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def request({:id, stick}, timeout) do
+    send(stick, {:request, self()})
+    receive do
+      :granted ->
+        :ok
+      after timeout ->
+        :timeouted
+    end
+  end
+\end{minted}
+\caption{Maximum time the process is willing to wait for a message, (chopstick is available)}
+\label{Figure:7}
+\end{figure}
+
+Then the only thing that is required is to update the case statement which should manage what the function should do if the process has achieved the timeout. To keep it simple the function just waits a bit of time and then try to request the chopstick again.
+
+\begin{figure}[H]
+\begin{minted}{elixir}
+  def eat(hunger, right, left, name, ctrl) do
+    case Chopstick.request(right, 200) do
+      :ok ->
+        case Chopstick.request(left, 200) do
+          :ok ->
+            done(hunger, right, left, name, ctrl)
+          :timeouted ->
+            Chopstick.release(right)
+            sleep(200)
+            eat(hunger, right, left, name, ctrl)
+        end
+      :timeouted ->
+        sleep(200)
+        eat(hunger, right, left, name, ctrl)
+    end
+  end
+\end{minted}
+\caption{Dealing with deadlooks}
+\label{Figure:8}
+\end{figure}
+
+\section*{Discussion}
+The author thought that dealing and working with concurrency in elixir was extremely fun. But the author did have a bit of problem implementing and dealing with the philosopher’s module where it constantly would get stuck due to deadlocks. Therefore the author needed to use \textbf{IO.puts} commands to show what different states the different philosophers where in. From that point the author was able to backtrack and fix what was wrong.
+
+\end{document}

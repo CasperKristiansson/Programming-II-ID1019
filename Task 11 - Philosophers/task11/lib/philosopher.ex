@@ -12,7 +12,6 @@ defmodule Philosopher do
     IO.puts("#{name} is done eating")
     send(ctrl, :done)
   end
-
   def dream(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is hungry")
     sleep(200)
