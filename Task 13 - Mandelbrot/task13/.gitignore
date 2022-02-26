@@ -24,3 +24,5 @@ task13-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+venv

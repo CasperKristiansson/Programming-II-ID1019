@@ -23,9 +23,8 @@ defmodule PPM do
   end
 
   defp row(row) do
-    List.foldr(row, [], fn({:rgb, r, g, b}, a) ->
+    List.foldr(row, [], fn({r, g, b}, a) ->
       [r, g, b | a]
     end)
   end
-
 end
