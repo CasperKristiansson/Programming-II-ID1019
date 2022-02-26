@@ -7,7 +7,7 @@ defmodule Color do
     x = trunc(a)
     y = trunc(255 * (a - x))
 
-    blue_purple(x, y)
+    green_white(x, y)
   end
 
   def blue_purple(x, y) do
@@ -58,7 +58,7 @@ defmodule Color do
     end
   end
 
-  def red(x, y) do
+  def red_yellow(x, y) do
     case x do
       0 ->
         cond do
@@ -79,6 +79,54 @@ defmodule Color do
         {0, 255, y}
       4 ->
         {0, 255 - y, 255}
+    end
+  end
+
+  def red_pink(x, y) do
+    case x do
+      0 ->
+        cond do
+          y < 85 ->
+            {y, 0, 0}
+          y < 120 ->
+            {255, 0, y}
+          y < 170 ->
+            {255, 0, 235}
+          true ->
+            {255, 0, 255}
+        end
+      1 ->
+        {y, 0, 255}
+      2 ->
+        {255 - y, 0, 255}
+      3 ->
+        {y, 0, 255}
+      4 ->
+        {255 - y, 0, 255}
+    end
+  end
+
+  def green_white(x, y) do
+    case x do
+      0 ->
+        cond do
+          y < 85 ->
+            {0, y, 0}
+          y < 120 ->
+            {y - 50, y, y - 50}
+          y < 170 ->
+            {y, y, y}
+          true ->
+            {y, y, y}
+        end
+      1 ->
+        {y, y, y}
+      2 ->
+        {255 - y, y, 255 - y}
+      3 ->
+        {255, y, 255}
+      4 ->
+        {255 - y, 255, 255 - y}
     end
   end
 

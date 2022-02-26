@@ -20,8 +20,11 @@ defmodule Cmplx do
 
   @doc """
   squares a complex number
-  TODO: Is this correct?
-  https://www.cuemath.com/algebra/square-root-of-complex-number/
+  Formula:
+  (a + bi)^2= a^2 + 2ab + (bi)^2 =
+  a^2 + 2ab + b^2 * i^2 =
+  a^2 − b^2 + 2abi =
+  (a^2 − b^2) + (2ab)i
   """
   def sqr({r, i}) do
     {r * r - i * i, 2 * r * i}
