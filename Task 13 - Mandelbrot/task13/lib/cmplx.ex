@@ -21,7 +21,7 @@ defmodule Cmplx do
   @doc """
   squares a complex number
   Formula:
-  (a + bi)^2= a^2 + 2ab + (bi)^2 =
+  (a + bi)^2 = a^2 + 2ab + (bi)^2 =
   a^2 + 2ab + b^2 * i^2 =
   a^2 − b^2 + 2abi =
   (a^2 − b^2) + (2ab)i
