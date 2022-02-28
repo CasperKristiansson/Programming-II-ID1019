@@ -22,30 +22,28 @@ defmodule Philosopher do
   end
   def dream(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is hungry")
-    sleep(400)
+    sleep(100)
     eat(hunger, right, left, name, ctrl)
   end
 
   def eat(hunger, right, left, name, ctrl) do
     IO.puts("#{name} is eating")
 
-    case Chopstick.request(right, 200) do
+    case Chopstick.request(right, 300) do
       :ok ->
         IO.puts("#{name} right received a chopstick!")
-        case Chopstick.request(left, 200) do
+        case Chopstick.request(left, 300) do
           :ok ->
             IO.puts("#{name} left received a chopstick!")
             done(hunger, right, left, name, ctrl)
           :timeouted ->
-            IO.puts("#{name} left chopstick timeouted!")
+            IO.puts("#{name} left chopstick timeouted!-------")
             Chopstick.release(right)
-            sleep(200)
-            eat(hunger, right, left, name, ctrl)
+            dream(hunger, right, left, name, ctrl)
         end
       :timeouted ->
-        IO.puts("#{name} right chopstick timeouted!")
-        sleep(200)
-        eat(hunger, right, left, name, ctrl)
+        IO.puts("#{name} right chopstick timeouted!--------")
+        dream(hunger, right, left, name, ctrl)
     end
   end
 
