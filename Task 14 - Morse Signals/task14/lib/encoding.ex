@@ -31,7 +31,7 @@ defmodule Encoding do
   def encoder(map, [head | tail]) do
     case Map.get(map, [head]) do
       nil ->
-        ""
+        encoder(map, tail)
       char ->
         char <> " " <> encoder(map, tail)
     end
