@@ -25,15 +25,15 @@ defmodule Encoding do
   def encode(str) do
     morse_tree = Morse.morse()
     map = generate_map(morse_tree, %{}, "")
-    encoder(map, str)
+    encoder(map, str, "")
   end
-  def encoder(_, []) do "" end
-  def encoder(map, [head | tail]) do
+  def encoder(_, [], result) do result end
+  def encoder(map, [head | tail], result) do
     case Map.get(map, [head]) do
       nil ->
-        encoder(map, tail)
+        encoder(map, tail, result)
       char ->
-        char <> " " <> encoder(map, tail)
+        encoder(map, tail, result <> " " <> char)
     end
   end
 end
